@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +32,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('chirps', ChirpController::class)
-    ->only(['index', 'store'])
+    ->only(['index', 'store', 'edit', 'update', 'destroy'])
+    ->missing(function (Request $request) {
+        return Redirect::route('chirps.index');
+    })
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';
